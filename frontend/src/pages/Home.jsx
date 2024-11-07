@@ -1,5 +1,11 @@
+import Hero from '../components/Hero'
+
 const Home = () => {
-  return <div>Home</div>
+  return (
+    <div className="mt-10">
+      <Hero />
+    </div>
+  )
 }
 
 export default Home

@@ -1,13 +1,20 @@
 import { NavLink } from 'react-router-dom'
+import { IoSearchOutline, IoCartOutline, IoMenu } from 'react-icons/io5'
+import { MdOutlineCancel } from 'react-icons/md'
+import { LuUserCircle2 } from 'react-icons/lu'
+import { useState } from 'react'
 
 const Navbar = () => {
+  const [visible, setVisible] = useState(false)
   return (
-    <div className="border-b border-gray-200 px-[5%] py-5">
+    <div className="border-b border-gray-200 px-[3%] sm:px-[5%] py-5">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="prata-regular text-2xl font-extrabold">CLOTH_STORE</h1>
+          <h1 className="prata-regular text-lg sm:text-2xl font-extrabold">
+            CLOTH_STORE
+          </h1>
         </div>
-        <div>
+        <div className="hidden sm:block">
           <ul className="flex gap-3">
             <NavLink to="/" className="text-gray-700 text-base uppercase">
               Home
@@ -32,6 +39,70 @@ const Navbar = () => {
               <hr className="w-1/2 h-[1.5px] mx-auto  bg-gray-700 hidden" />
             </NavLink>
           </ul>
+        </div>
+        <div className="flex gap-4">
+          <IoSearchOutline className="w-5 h-5 cursor-pointer" />
+          <IoCartOutline className="w-5 h-5 cursor-pointer" />
+          <div className="relative group">
+            <LuUserCircle2 className="w-5 h-5 cursor-pointer  " />
+            <div className="absolute  px-4 py-3  top-[20px] right-[-5px] hidden group-hover:block">
+              <div className="flex flex-col gap-3 w-36 bg-gray-200 rounded p-6">
+                <p className="cursor-pointer">My Profile</p>
+                <p className="cursor-pointer">Orders</p>
+                <p className="cursor-pointer">Logout</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <IoMenu
+              onClick={() => setVisible(true)}
+              className="w-5 h-5 sm:hidden"
+            />
+          </div>
+          <div
+            className={`absolute top-0 bottom-0 right-0 overflow-hidden shadow-xl bg-white transition-all ${
+              visible ? 'w-3/4' : 'w-0'
+            }`}
+          >
+            <div className="px-2 py-3">
+              <MdOutlineCancel
+                onClick={() => setVisible(false)}
+                className="w-6 h-6"
+              />
+              <div className="py-3 px-6">
+                <ul className="flex flex-col gap-3">
+                  <NavLink
+                    to="/"
+                    onClick={() => setVisible(false)}
+                    className="text-gray-700 text-base uppercase p-2"
+                  >
+                    Home
+                  </NavLink>
+                  <NavLink
+                    to="/collection"
+                    onClick={() => setVisible(false)}
+                    className="text-gray-700 text-base uppercase p-2"
+                  >
+                    Collection
+                  </NavLink>
+                  <NavLink
+                    to="/about"
+                    onClick={() => setVisible(false)}
+                    className="text-gray-700 text-base uppercase p-2"
+                  >
+                    About
+                  </NavLink>
+                  <NavLink
+                    to="/contact"
+                    onClick={() => setVisible(false)}
+                    className="text-gray-700 text-base uppercase p-2"
+                  >
+                    Contact
+                  </NavLink>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
