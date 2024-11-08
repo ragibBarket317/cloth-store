@@ -1,9 +1,10 @@
 import banner1 from '../assets/banner1.png'
 import banner2 from '../assets/banner2.png'
 import banner3 from '../assets/banner3.png'
+import banner4 from '../assets/banner4.jpg'
 import ImageSlider from './ImageSlider'
 const Hero = () => {
-  const images = [banner3, banner2, banner1]
+  const images = [banner4, banner3, banner2, banner1]
   return (
     <div className="flex flex-col sm:flex-row border border-gray-400">
       {/* Hero Left Side */}
@@ -24,8 +25,6 @@ const Hero = () => {
       </div>
       {/* Hero Right Side */}
       <ImageSlider images={images} />
-
-      {/* <img src="/banner3.png" alt="" className="w-full sm:w-1/2 border" /> */}
     </div>
   )
 }
