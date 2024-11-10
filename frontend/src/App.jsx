@@ -8,11 +8,13 @@ import Orders from './pages/Orders'
 import Navbar from './components/Navbar'
 import Collection from './pages/Collection'
 import Footer from './components/Footer'
+import Search from './components/Search'
 
 const App = () => {
   return (
     <div>
       <Navbar />
+      <Search />
       <div className="px-[5%]">
         <Routes>
           <Route path="/" element={<Home />} />

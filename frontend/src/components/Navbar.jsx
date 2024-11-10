@@ -2,10 +2,12 @@ import { NavLink } from 'react-router-dom'
 import { IoSearchOutline, IoCartOutline, IoMenu } from 'react-icons/io5'
 import { MdOutlineCancel } from 'react-icons/md'
 import { LuUserCircle2 } from 'react-icons/lu'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { ShopContext } from '../context/ShopContext'
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false)
+  const { navigate } = useContext(ShopContext)
   return (
     <div className="border-b border-gray-200 px-[3%] sm:px-[5%] py-5">
       <div className="flex justify-between items-center">
@@ -41,7 +43,10 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="flex gap-4">
-          <IoSearchOutline className="w-5 h-5 cursor-pointer" />
+          <IoSearchOutline
+            onClick={() => navigate('/collection')}
+            className="w-5 h-5 cursor-pointer"
+          />
           <IoCartOutline className="w-5 h-5 cursor-pointer" />
           <div className="relative group">
             <LuUserCircle2 className="w-5 h-5 cursor-pointer  " />

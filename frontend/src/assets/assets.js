@@ -88,7 +88,7 @@ export const products = [
     name: 'Mens Top Quality Blank Full T-shirt',
     description:
       "Cloth store Men's Premium Quality Sports t-shirts are smooth and comfortable. The t-shirts are made with the finest quality polyester fabric, perfect for casual or sports wear.",
-    image: [fts1],
+    image: [fts1, fts2, fts3],
     regularPrice: 650,
     discountPrice: null,
     stock: 5,
