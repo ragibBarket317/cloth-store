@@ -7,7 +7,12 @@ import { ShopContext } from '../context/ShopContext'
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false)
-  const { navigate } = useContext(ShopContext)
+  const { navigate, setShowSearch } = useContext(ShopContext)
+
+  const handleSearch = () => {
+    navigate('/collection')
+    setShowSearch(true)
+  }
   return (
     <div className="border-b border-gray-200 px-[3%] sm:px-[5%] py-5">
       <div className="flex justify-between items-center">
@@ -44,7 +49,7 @@ const Navbar = () => {
         </div>
         <div className="flex gap-4">
           <IoSearchOutline
-            onClick={() => navigate('/collection')}
+            onClick={handleSearch}
             className="w-5 h-5 cursor-pointer"
           />
           <IoCartOutline className="w-5 h-5 cursor-pointer" />

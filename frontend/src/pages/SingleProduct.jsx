@@ -7,6 +7,7 @@ const SingleProduct = () => {
   const { products, currency, navigate } = useContext(ShopContext)
   const [productData, setProductData] = useState('')
   const [image, setImage] = useState('')
+  const [selectSize, setSelectSize] = useState('')
   const { id } = useParams()
 
   const relatedProducts = products.filter(
@@ -61,7 +62,10 @@ const SingleProduct = () => {
               {productData?.sizes?.map((item, index) => (
                 <p
                   key={index}
-                  className="p-3 border w-12 h-12 flex justify-center items-center "
+                  onClick={() => setSelectSize(item)}
+                  className={`p-3 border w-12 h-12 flex justify-center items-center ${
+                    item === selectSize ? 'border-orange-500' : ''
+                  }`}
                 >
                   {item}
                 </p>

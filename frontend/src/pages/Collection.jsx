@@ -4,9 +4,8 @@ import { ShopContext } from '../context/ShopContext'
 import ProductItem from '../components/ProductItem'
 
 const Collection = () => {
-  const { products } = useContext(ShopContext)
+  const { products, searchText } = useContext(ShopContext)
   const [visiableFilter, setVisibleFilter] = useState(false)
-  const [collection, setCollection] = useState([])
   const [filteredProducts, setFilterProducts] = useState([])
   const [category, setCategory] = useState([])
   const [subcategory, setSubCategory] = useState([])
@@ -39,7 +38,13 @@ const Collection = () => {
   }
   const applyFilter = () => {
     let productCopy = products.slice()
-    console.log('hello')
+
+    if (searchText.length > 0) {
+      productCopy = productCopy.filter((product) =>
+        product.name.toLowerCase().includes(searchText)
+      )
+    }
+
     if (category.length > 0) {
       productCopy = productCopy.filter((product) =>
         category.includes(product.category)
@@ -84,10 +89,8 @@ const Collection = () => {
   }, [sorted])
 
   useEffect(() => {
-    // const productCopy = products.slice()
-    // setCollection(productCopy)
     applyFilter()
-  }, [category, subcategory, subSubcategory])
+  }, [category, subcategory, subSubcategory, searchText])
   return (
     <div>
       <div className="mt-5 sm:hidden">
