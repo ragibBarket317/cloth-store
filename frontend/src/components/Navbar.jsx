@@ -7,7 +7,7 @@ import { ShopContext } from '../context/ShopContext'
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false)
-  const { navigate, setShowSearch } = useContext(ShopContext)
+  const { navigate, setShowSearch, getCartCount } = useContext(ShopContext)
 
   const handleSearch = () => {
     navigate('/collection')
@@ -52,9 +52,18 @@ const Navbar = () => {
             onClick={handleSearch}
             className="w-5 h-5 cursor-pointer"
           />
-          <IoCartOutline className="w-5 h-5 cursor-pointer" />
+          <div className="relative">
+            <IoCartOutline
+              onClick={() => navigate('/cart')}
+              className="w-5 h-5 cursor-pointer"
+            />
+            <div className="absolute top-3 right-[-10px] bg-red-600 rounded-full w-5 h-5 text-white text-[12px] flex justify-center items-center">
+              {getCartCount()}
+            </div>
+          </div>
           <div className="relative group">
             <LuUserCircle2 className="w-5 h-5 cursor-pointer  " />
+
             <div className="absolute  px-4 py-3  top-[20px] right-[-5px] hidden group-hover:block">
               <div className="flex flex-col gap-3 w-36 bg-gray-200 rounded p-6">
                 <p className="cursor-pointer">My Profile</p>

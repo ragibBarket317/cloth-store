@@ -4,7 +4,7 @@ import { ShopContext } from '../context/ShopContext'
 import ProductItem from '../components/ProductItem'
 
 const SingleProduct = () => {
-  const { products, currency, navigate } = useContext(ShopContext)
+  const { products, currency, navigate, addToCart } = useContext(ShopContext)
   const [productData, setProductData] = useState('')
   const [image, setImage] = useState('')
   const [selectSize, setSelectSize] = useState('')
@@ -72,7 +72,10 @@ const SingleProduct = () => {
               ))}
             </div>
             <div className="mt-5">
-              <button className="px-4 py-3 bg-black text-white rounded-sm active:bg-gray-700">
+              <button
+                onClick={() => addToCart(productData._id, selectSize)}
+                className="px-4 py-3 bg-black text-white rounded-sm active:bg-gray-700"
+              >
                 ADD TO CART
               </button>
             </div>
