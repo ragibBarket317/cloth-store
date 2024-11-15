@@ -2,9 +2,17 @@ import { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import TotalCart from '../components/TotalCart'
+import { toast } from 'react-toastify'
 
 const Cart = () => {
-  const { products, cartItems, currency, updateCart } = useContext(ShopContext)
+  const {
+    products,
+    cartItems,
+    currency,
+    updateCart,
+    navigate,
+    getTotalAmmount,
+  } = useContext(ShopContext)
   const [cartData, setCartData] = useState([])
 
   const getCartData = () => {
@@ -19,6 +27,14 @@ const Cart = () => {
       }
     }
     setCartData(tempData)
+  }
+
+  const handleProccedToCheckout = () => {
+    if (getTotalAmmount() === 0) {
+      return toast.error('Please add some product!')
+    } else {
+      navigate('/place-order')
+    }
   }
 
   useEffect(() => {
@@ -85,7 +101,10 @@ const Cart = () => {
         <div></div>
         <div className="w-full sm:w-[30%]">
           <TotalCart />
-          <button className="px-4 py-2 bg-black text-white mt-10 active:bg-gray-700">
+          <button
+            onClick={handleProccedToCheckout}
+            className="px-4 py-2 bg-black text-white mt-10 active:bg-gray-700"
+          >
             Procced To Checkout
           </button>
         </div>

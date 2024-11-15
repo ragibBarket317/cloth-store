@@ -11,7 +11,7 @@ const ShopContextProvider = ({ children }) => {
   const [searchText, setSearchText] = useState('')
   const [cartItems, setCartItems] = useState({})
   const currency = '৳'
-  const delivery_fee = 10
+  const delivery_fee = 60
 
   const addToCart = (itemId, size) => {
     let cartData = structuredClone(cartItems)

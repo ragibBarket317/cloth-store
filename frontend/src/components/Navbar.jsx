@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { IoSearchOutline, IoCartOutline, IoMenu } from 'react-icons/io5'
 import { MdOutlineCancel } from 'react-icons/md'
 import { LuUserCircle2 } from 'react-icons/lu'
@@ -17,9 +17,11 @@ const Navbar = () => {
     <div className="border-b border-gray-200 px-[3%] sm:px-[5%] py-5">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="prata-regular text-lg sm:text-2xl font-extrabold">
-            CLOTH_STORE
-          </h1>
+          <Link to="/">
+            <h1 className="prata-regular text-lg sm:text-2xl font-extrabold">
+              CLOTH_STORE
+            </h1>
+          </Link>
         </div>
         <div className="hidden sm:block">
           <ul className="flex gap-3">
@@ -62,7 +64,10 @@ const Navbar = () => {
             </div>
           </div>
           <div className="relative group">
-            <LuUserCircle2 className="w-5 h-5 cursor-pointer  " />
+            <LuUserCircle2
+              onClick={() => navigate('/login')}
+              className="w-5 h-5 cursor-pointer  "
+            />
 
             <div className="absolute  px-4 py-3  top-[20px] right-[-5px] hidden group-hover:block">
               <div className="flex flex-col gap-3 w-36 bg-gray-200 rounded p-6">
