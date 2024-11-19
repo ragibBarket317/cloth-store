@@ -5,13 +5,6 @@ import productModel from '../models/productModel.js'
 
 const addProduct = async (req, res) => {
   try {
-  } catch (error) {
-    console.log(error)
-    res.json({ success: false, message: error.message })
-  }
-}
-const allProduct = async (req, res) => {
-  try {
     const {
       name,
       description,
@@ -64,8 +57,92 @@ const allProduct = async (req, res) => {
     res.json({ success: false, message: error.message })
   }
 }
+
+const updateProduct = async (req, res) => {
+  try {
+    const {
+      productId,
+      name,
+      description,
+      regularPrice,
+      discountPrice,
+      category,
+      subCategory,
+      subSubCategory,
+      sizes,
+      spacification,
+    } = req.body
+
+    const image1 = req.files.image1 && req.files.image1[0]
+    const image2 = req.files.image2 && req.files.image2[0]
+    const image3 = req.files.image3 && req.files.image3[0]
+    const image4 = req.files.image4 && req.files.image4[0]
+
+    const images = [image1, image2, image3, image4].filter(
+      (item) => item !== undefined
+    )
+
+    let imageUrl = []
+
+    if (images.length > 0) {
+      imageUrl = await Promise.all(
+        images.map(async (item) => {
+          const result = await cloudinary.uploader.upload(item.path, {
+            resource_type: 'image',
+          })
+          return result.secure_url
+        })
+      )
+    }
+
+    // find the product and update
+
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      productId,
+      {
+        ...(name && { name }),
+        ...(description && { description }),
+        ...(category && { category }),
+        ...(subCategory && { subCategory }),
+        ...(subSubCategory && { subSubCategory }),
+        ...(regularPrice && { regularPrice: Number(regularPrice) }),
+        ...(discountPrice && { discountPrice: Number(discountPrice) }),
+        ...(sizes && { sizes: JSON.parse(sizes) }),
+        ...(spacification && { spacification: JSON.parse(spacification) }),
+        ...(imageUrl.length > 0 && { image: imageUrl }),
+        date: Date.now(),
+      },
+      { new: true }
+    )
+
+    if (!updatedProduct) {
+      return res.json({ success: false, message: 'Product not found' })
+    }
+
+    res.json({
+      success: true,
+      message: 'Product updated',
+      product: updatedProduct,
+    })
+  } catch (error) {
+    console.log(error)
+    res.json({ success: false, message: error.message })
+  }
+}
+
+const allProduct = async (req, res) => {
+  try {
+    const products = await productModel.find({})
+    res.json({ success: true, products })
+  } catch (error) {
+    console.log(error)
+    res.json({ success: false, message: error.message })
+  }
+}
 const removeProduct = async (req, res) => {
   try {
+    await productModel.findByIdAndDelete(req.body.id)
+    res.json({ success: true, message: 'Product removed' })
   } catch (error) {
     console.log(error)
     res.json({ success: false, message: error.message })
@@ -73,10 +150,13 @@ const removeProduct = async (req, res) => {
 }
 const singleProduct = async (req, res) => {
   try {
+    const { productId } = req.body
+    const product = await productModel.findById(productId)
+    res.json({ success: true, product })
   } catch (error) {
     console.log(error)
     res.json({ success: false, message: error.message })
   }
 }
 
-export { addProduct, allProduct, removeProduct, singleProduct }
+export { addProduct, updateProduct, allProduct, removeProduct, singleProduct }
