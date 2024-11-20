@@ -14,17 +14,11 @@ const productSchema = new mongoose.Schema({
   category: { type: String, required: true },
   subCategory: { type: String, required: true },
   subSubCategory: { type: String, required: true },
-  spacification: { type: Array },
+  specification: { type: Array },
   image: { type: Array, required: true },
   sizes: { type: Array, required: true },
   reviews: [reviewSchema],
-  stock: {
-    S: { type: Number, default: 0 },
-    M: { type: Number, default: 0 },
-    L: { type: Number, default: 0 },
-    XL: { type: Number, default: 0 },
-    XXL: { type: Number, default: 0 },
-  },
+  stock: { type: Map, of: Number },
   date: { type: Number, required: true },
 })
 

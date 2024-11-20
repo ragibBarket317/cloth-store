@@ -14,8 +14,12 @@ const addProduct = async (req, res) => {
       subCategory,
       subSubCategory,
       sizes,
-      spacification,
+      specification,
+      stock,
     } = req.body
+
+    console.log(req.body)
+    console.log(req.files)
 
     const image1 = req.files.image1 && req.files.image1[0]
     const image2 = req.files.image2 && req.files.image2[0]
@@ -44,7 +48,8 @@ const addProduct = async (req, res) => {
       regularPrice: Number(regularPrice),
       discountPrice: Number(discountPrice),
       sizes: JSON.parse(sizes),
-      spacification: JSON.parse(spacification),
+      specification: JSON.parse(specification),
+      stock: JSON.parse(stock),
       image: imageUrl,
       date: Date.now(),
     }
@@ -71,6 +76,7 @@ const updateProduct = async (req, res) => {
       subSubCategory,
       sizes,
       spacification,
+      stock,
     } = req.body
 
     const image1 = req.files.image1 && req.files.image1[0]
@@ -109,6 +115,7 @@ const updateProduct = async (req, res) => {
         ...(discountPrice && { discountPrice: Number(discountPrice) }),
         ...(sizes && { sizes: JSON.parse(sizes) }),
         ...(spacification && { spacification: JSON.parse(spacification) }),
+        ...(stock && { stock: JSON.parse(stock) }),
         ...(imageUrl.length > 0 && { image: imageUrl }),
         date: Date.now(),
       },
