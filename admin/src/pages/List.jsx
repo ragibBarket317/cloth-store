@@ -2,9 +2,21 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { backendURL } from '../App'
 import { useEffect, useState } from 'react'
+import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
+import {} from 'react-icons/fa'
+import UpdateProductModal from '../components/UpdateProductModal'
 
 const List = ({ token }) => {
   const [products, setProducts] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editProductId, setEditProductId] = useState('')
+
+  const openModal = (id) => {
+    setIsModalOpen(true)
+    setEditProductId(id)
+  }
+  const closeModal = () => setIsModalOpen(false)
+
   const fetchAllProduct = async () => {
     try {
       const response = await axios.get(backendURL + '/api/product/all')
@@ -54,7 +66,7 @@ const List = ({ token }) => {
         <div>
           <p>Price</p>
         </div>
-        <div>
+        <div className="text-center">
           <p>Action</p>
         </div>
       </div>
@@ -64,16 +76,35 @@ const List = ({ token }) => {
             key={product._id}
             className="grid grid-cols-5 gap-3 items-center p-3"
           >
-            <h2>{product.name}</h2>
+            <div className="flex items-center gap-2">
+              <img
+                className="w-12 h-12 object-cover"
+                src={product.image[0]}
+                alt=""
+              />
+              <h2>{product.name}</h2>
+            </div>
             <p>{product.category}</p>
             <p>{product.stock.S}</p>
             <p>{product.regularPrice}</p>
-            <p
-              onClick={() => deleteProduct(product._id)}
-              className="cursor-pointer"
-            >
-              X
-            </p>
+            <div className="flex justify-center gap-2">
+              <FaRegEdit
+                onClick={() => openModal(product._id)}
+                className="w-5 h-5 cursor-pointer text-green-500 text-center"
+              />
+              <FaRegTrashAlt
+                onClick={() => deleteProduct(product._id)}
+                className="w-5 h-5 cursor-pointer hover:text-red-500 text-center"
+              />
+              {isModalOpen && (
+                <UpdateProductModal
+                  closeModal={closeModal}
+                  products={products}
+                  editProductId={editProductId}
+                  token={token}
+                />
+              )}
+            </div>
           </div>
         ))}
       </div>

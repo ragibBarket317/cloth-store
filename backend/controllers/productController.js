@@ -75,18 +75,23 @@ const updateProduct = async (req, res) => {
       subCategory,
       subSubCategory,
       sizes,
-      spacification,
+      specification,
       stock,
     } = req.body
+    console.log(req.body)
 
     const image1 = req.files.image1 && req.files.image1[0]
     const image2 = req.files.image2 && req.files.image2[0]
     const image3 = req.files.image3 && req.files.image3[0]
     const image4 = req.files.image4 && req.files.image4[0]
 
+    console.log(image1, image2, image3, image4)
+
     const images = [image1, image2, image3, image4].filter(
       (item) => item !== undefined
     )
+    // const images = req.files || []
+    console.log('image', req.files)
 
     let imageUrl = []
 
@@ -114,7 +119,7 @@ const updateProduct = async (req, res) => {
         ...(regularPrice && { regularPrice: Number(regularPrice) }),
         ...(discountPrice && { discountPrice: Number(discountPrice) }),
         ...(sizes && { sizes: JSON.parse(sizes) }),
-        ...(spacification && { spacification: JSON.parse(spacification) }),
+        ...(specification && { specification: JSON.parse(specification) }),
         ...(stock && { stock: JSON.parse(stock) }),
         ...(imageUrl.length > 0 && { image: imageUrl }),
         date: Date.now(),
