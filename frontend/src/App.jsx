@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Cart from './pages/Cart'
 import Login from './pages/Login'
 import Registration from './pages/Registration'
+import ProtectedRoute from './ProtectedRoute'
 
 const App = () => {
   return (
@@ -24,12 +25,21 @@ const App = () => {
       <div className="px-[5%]">
         <Routes>
           <Route path="/" element={<Home />} />
+
           <Route path="/about" element={<About />} />
+
           <Route path="/collection" element={<Collection />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/product/:id" element={<SingleProduct />} />
-          <Route path="/place-order" element={<PlaceOrder />} />
+          <Route
+            path="/place-order"
+            element={
+              <ProtectedRoute>
+                <PlaceOrder />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/orders" element={<Orders />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />

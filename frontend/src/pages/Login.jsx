@@ -1,14 +1,37 @@
 import React, { useContext, useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+import { useLocation } from 'react-router-dom'
 
 const Login = () => {
-  const { navigate } = useContext(ShopContext)
+  const { navigate, backendURL, token, setToken } = useContext(ShopContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const location = useLocation()
 
-  const handleSubmit = (e) => {
+  const from = location?.state?.from?.pathname || '/'
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(email, password)
+    try {
+      const response = await axios.post(backendURL + '/api/user/login', {
+        email,
+        password,
+      })
+      if (response.data.success === true) {
+        console.log(response.data.token)
+        toast.success('Login successfully')
+        setToken(response.data.token)
+        localStorage.setItem('token', response.data.token)
+        navigate(from, { replace: true })
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
   }
   return (
     <div>

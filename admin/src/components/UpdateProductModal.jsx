@@ -7,10 +7,6 @@ const UpdateProductModal = ({ closeModal, products, editProductId, token }) => {
   const product = products.find((product) => product._id === editProductId)
   const [loading, setLoading] = useState(false)
   const [images, setImages] = useState([])
-  const [image1, setImage1] = useState(false)
-  const [image2, setImage2] = useState(false)
-  const [image3, setImage3] = useState(false)
-  const [image4, setImage4] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [specification, setSpecification] = useState([])
@@ -24,9 +20,6 @@ const UpdateProductModal = ({ closeModal, products, editProductId, token }) => {
   const [subSubCategory, setSubSubCategory] = useState('')
   const [stock, setStock] = useState({})
 
-  console.log('images', images)
-  console.log('specification', specification)
-
   const percentCalculator = () => {
     const percentAmount = (Number(regularPrice) * Number(percentage)) / 100
     const disCountAmount = Number(regularPrice) - percentAmount
@@ -34,16 +27,11 @@ const UpdateProductModal = ({ closeModal, products, editProductId, token }) => {
       setDiscountPrice(disCountAmount)
     }
   }
-  // const specificationToArray = () => {
-  //   const specificationArray = specification.toString().split('.')
-  //   setSpecification(specificationArray)
-  // }
-
   useEffect(() => {
     if (typeof specification === 'string') {
       const specificationArray = specification
         .split('.')
-        .map((item) => item.trim()) // Split by '.' and trim spaces
+        .map((item) => item.trim())
       setSpecification(specificationArray)
     }
   }, [specification])
@@ -51,7 +39,7 @@ const UpdateProductModal = ({ closeModal, products, editProductId, token }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      //   setLoading(true)
+      setLoading(true)
       const specificationArray = specificationString
         .split('.')
         .map((item) => item.trim())
@@ -76,17 +64,16 @@ const UpdateProductModal = ({ closeModal, products, editProductId, token }) => {
       formData.append('subCategory', subCategory)
       formData.append('subSubCategory', subSubCategory)
 
-      //   image1 && formData.append('image1', image1)
-      //   image2 && formData.append('image2', image2)
-      //   image3 && formData.append('image3', image3)
-      //   image4 && formData.append('image4', image4)
-
       const response = await axios.post(
         backendURL + '/api/product/update',
         formData,
         { headers: { token } }
       )
-      console.log(response)
+      if (response.data.success === true) {
+        setLoading(false)
+        toast.success('Product updated successfully!')
+        closeModal()
+      }
     } catch (error) {
       console.log(error)
     }
@@ -108,10 +95,6 @@ const UpdateProductModal = ({ closeModal, products, editProductId, token }) => {
       setImages(product.image || [])
     }
   }, [product])
-
-  // useEffect(() => {
-  //   specificationToArray()
-  // }, [specification])
 
   useEffect(() => {
     percentCalculator()

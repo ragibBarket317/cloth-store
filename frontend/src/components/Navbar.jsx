@@ -7,11 +7,17 @@ import { ShopContext } from '../context/ShopContext'
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false)
-  const { navigate, setShowSearch, getCartCount } = useContext(ShopContext)
+  const { navigate, setShowSearch, getCartCount, token, setToken } =
+    useContext(ShopContext)
 
   const handleSearch = () => {
     navigate('/collection')
     setShowSearch(true)
+  }
+  const handleLogout = () => {
+    setToken('')
+    localStorage.removeItem('token')
+    navigate('/login')
   }
   return (
     <div className="border-b border-gray-200 px-[3%] sm:px-[5%] py-5">
@@ -68,14 +74,17 @@ const Navbar = () => {
               onClick={() => navigate('/login')}
               className="w-5 h-5 cursor-pointer  "
             />
-
-            <div className="absolute  px-4 py-3  top-[20px] right-[-5px] hidden group-hover:block">
-              <div className="flex flex-col gap-3 w-36 bg-gray-200 rounded p-6">
-                <p className="cursor-pointer">My Profile</p>
-                <p className="cursor-pointer">Orders</p>
-                <p className="cursor-pointer">Logout</p>
+            {token && (
+              <div className="absolute  px-4 py-3  top-[20px] right-[-5px] hidden group-hover:block">
+                <div className="flex flex-col gap-3 w-36 bg-gray-200 rounded p-6">
+                  <p className="cursor-pointer">My Profile</p>
+                  <p className="cursor-pointer">Orders</p>
+                  <p onClick={handleLogout} className="cursor-pointer">
+                    Logout
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div>
             <IoMenu

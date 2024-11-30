@@ -1,15 +1,33 @@
 import React, { useContext, useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const Registration = () => {
-  const { navigate } = useContext(ShopContext)
+  const { navigate, backendURL } = useContext(ShopContext)
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(name, email, password)
+    try {
+      const response = await axios.post(backendURL + '/api/user/register', {
+        name,
+        email,
+        password,
+      })
+      console.log(response)
+      if (response.data.success === true) {
+        toast.success('Create user successfully')
+        navigate('/login')
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
   }
   return (
     <div>

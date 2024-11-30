@@ -6,6 +6,8 @@ import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
 import {} from 'react-icons/fa'
 import UpdateProductModal from '../components/UpdateProductModal'
 
+const currency = '৳'
+
 const List = ({ token }) => {
   const [products, setProducts] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -47,13 +49,13 @@ const List = ({ token }) => {
 
   useEffect(() => {
     fetchAllProduct()
-  }, [])
+  }, [isModalOpen])
   return (
     <div>
       <h2 className="prata-regular font-medium text-xl mb-5">
         All Product List
       </h2>
-      <div className="grid grid-cols-5 gap-3 items-center bg-gray-100 p-3">
+      <div className="grid grid-cols-[3fr_1fr_1fr_1fr_1fr] gap-3 items-center bg-gray-100 p-3">
         <div>
           <p>Product Name</p>
         </div>
@@ -74,7 +76,7 @@ const List = ({ token }) => {
         {products.map((product) => (
           <div
             key={product._id}
-            className="grid grid-cols-5 gap-3 items-center p-3"
+            className="grid grid-cols-[3fr_1fr_1fr_1fr_1fr] gap-3 items-center p-3"
           >
             <div className="flex items-center gap-2">
               <img
@@ -85,8 +87,15 @@ const List = ({ token }) => {
               <h2>{product.name}</h2>
             </div>
             <p>{product.category}</p>
-            <p>{product.stock.S}</p>
-            <p>{product.regularPrice}</p>
+            <p>
+              {Object.values(product.stock).reduce(
+                (total, current) => total + current,
+                0
+              )}
+            </p>
+            <p>
+              {currency} {product.regularPrice}
+            </p>
             <div className="flex justify-center gap-2">
               <FaRegEdit
                 onClick={() => openModal(product._id)}

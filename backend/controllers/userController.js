@@ -72,6 +72,25 @@ const registerUser = async (req, res) => {
     res.json({ success: false, message: error.message })
   }
 }
+
+const getAllUser = async (req, res) => {
+  try {
+    const allUser = await userModel.find({})
+    res.json({ success: true, allUser })
+  } catch (error) {
+    console.log(error)
+    res.json({ success: false, message: error.message })
+  }
+}
+const deleteUser = async (req, res) => {
+  try {
+    await userModel.findByIdAndDelete(req.body.id)
+    res.json({ success: true, message: 'User deleted successfully' })
+  } catch (error) {
+    console.log(error)
+    res.json({ success: false, message: error.message })
+  }
+}
 // Route for user admin
 const adminLogin = async (req, res) => {
   try {
@@ -91,4 +110,4 @@ const adminLogin = async (req, res) => {
   }
 }
 
-export { loginUser, registerUser, adminLogin }
+export { loginUser, registerUser, adminLogin, getAllUser, deleteUser }
