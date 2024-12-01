@@ -78,7 +78,12 @@ const Navbar = () => {
               <div className="absolute  px-4 py-3  top-[20px] right-[-5px] hidden group-hover:block">
                 <div className="flex flex-col gap-3 w-36 bg-gray-200 rounded p-6">
                   <p className="cursor-pointer">My Profile</p>
-                  <p className="cursor-pointer">Orders</p>
+                  <p
+                    onClick={() => navigate('/orders')}
+                    className="cursor-pointer"
+                  >
+                    Orders
+                  </p>
                   <p onClick={handleLogout} className="cursor-pointer">
                     Logout
                   </p>

@@ -93,7 +93,7 @@ const ShopContextProvider = ({ children }) => {
 
   const getProductsData = async () => {
     try {
-      const response = await axios.get(backendURL + 'api/product/all')
+      const response = await axios.get(backendURL + '/api/product/all')
       console.log(response)
     } catch (error) {
       console.log(error)
@@ -142,6 +142,7 @@ const ShopContextProvider = ({ children }) => {
     addToCart,
     getCartCount,
     cartItems,
+    setCartItems,
     updateCart,
     delivery_fee,
     getTotalAmmount,

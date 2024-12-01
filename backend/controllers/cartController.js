@@ -11,7 +11,6 @@ const addToCart = async (req, res) => {
       if (cartData[itemId][size]) {
         cartData[itemId][size] += 1
       } else {
-        cartData[itemId] = {}
         cartData[itemId][size] = 1
       }
     } else {
