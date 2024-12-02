@@ -17,12 +17,7 @@ connectCloudinary()
 //Middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
-app.use(
-  cors({
-    origin: `${process.env.FRONTEND_URL}`, // Replace with your frontend URL
-  })
-)
+app.use(cors('*'))
 
 // API End points
 app.use('/api/user', userRouter)
