@@ -17,7 +17,12 @@ connectCloudinary()
 //Middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors('*'))
+app.use(
+  cors({
+    origin: 'https://cloth-store-smoky.vercel.app', // Replace with your frontend's URL
+    credentials: true, // If you are using cookies/auth
+  })
+)
 
 // API End points
 app.use('/api/user', userRouter)

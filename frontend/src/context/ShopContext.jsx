@@ -91,15 +91,15 @@ const ShopContextProvider = ({ children }) => {
     return totalAmmount
   }
 
-  const getProductsData = async () => {
-    try {
-      const response = await axios.get(backendURL + '/api/product/all')
-      console.log(response)
-    } catch (error) {
-      console.log(error)
-      toast.error(error.message)
-    }
-  }
+  // const getProductsData = async () => {
+  //   try {
+  //     const response = await axios.get(backendURL + '/api/product/all')
+  //     console.log(response)
+  //   } catch (error) {
+  //     console.log(error)
+  //     toast.error(error.message)
+  //   }
+  // }
 
   const getUserCart = async (token) => {
     try {
@@ -124,9 +124,9 @@ const ShopContextProvider = ({ children }) => {
     }
   }, [token])
 
-  useEffect(() => {
-    getProductsData()
-  }, [])
+  // useEffect(() => {
+  //   getProductsData()
+  // }, [])
   useEffect(() => {
     getCartCount()
   }, [cartItems])
