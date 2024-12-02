@@ -32,7 +32,7 @@ const Registration = () => {
   return (
     <div>
       <div className="flex justify-center min-h-[500px] items-center">
-        <div className="w-[30%] shadow-md py-8 px-6">
+        <div className="w-full sm:w-[30%] shadow-md py-8 px-6">
           <h1 className="text-center text-xl prata-regular font-semibold mt-3 mb-5">
             Register
           </h1>

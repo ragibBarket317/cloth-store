@@ -51,6 +51,8 @@ const PlaceOrder = () => {
         }
       }
 
+      console.log(orderItems)
+
       let orderData = {
         address: formData,
         items: orderItems,
@@ -75,10 +77,31 @@ const PlaceOrder = () => {
           toast.error(error.message)
         }
       }
+      const sslCommerzCall = async () => {
+        try {
+          const response = await axios.post(
+            backendURL + '/api/order/initiate-payment',
+            orderData,
+            { headers: { token } }
+          )
+          console.log(response)
+          if (response.data.success) {
+            window.location.href = response.data.url
+          } else {
+            toast.error(response.data.message)
+          }
+        } catch (error) {
+          console.log(error)
+          toast.error(error.message)
+        }
+      }
 
       switch (method) {
         case 'COD':
           codCall()
+          break
+        case 'SSL':
+          sslCommerzCall()
           break
 
         default:
@@ -92,8 +115,8 @@ const PlaceOrder = () => {
   return (
     <form onSubmit={onSubmitHandler}>
       <div className="mt-10 mb-10">
-        <div className="flex justify-between gap-3">
-          <div className="w-[40%]">
+        <div className="flex flex-col sm:flex sm:flex-row justify-between gap-3">
+          <div className="w-full mb-10 sm:w-[40%] sm:mb-0">
             <h2 className="text-xl font-medium mb-5">Your Information</h2>
 
             <div className="space-y-5">
@@ -105,6 +128,7 @@ const PlaceOrder = () => {
                   name="firstName"
                   value={formData.firstName}
                   onChange={onChangeHandler}
+                  required
                 />
                 <input
                   type="text"
@@ -113,6 +137,7 @@ const PlaceOrder = () => {
                   name="lastName"
                   value={formData.lastName}
                   onChange={onChangeHandler}
+                  required
                 />
               </div>
               <div>
@@ -123,6 +148,7 @@ const PlaceOrder = () => {
                   name="email"
                   value={formData.email}
                   onChange={onChangeHandler}
+                  required
                 />
               </div>
               <div className="flex gap-3">
@@ -133,6 +159,7 @@ const PlaceOrder = () => {
                   name="address"
                   value={formData.address}
                   onChange={onChangeHandler}
+                  required
                 />
                 <input
                   type="text"
@@ -141,6 +168,7 @@ const PlaceOrder = () => {
                   name="city"
                   value={formData.city}
                   onChange={onChangeHandler}
+                  required
                 />
               </div>
               <div>
@@ -151,11 +179,12 @@ const PlaceOrder = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={onChangeHandler}
+                  required
                 />
               </div>
             </div>
           </div>
-          <div className="w-[35%]">
+          <div className="w-full sm:w-[35%]">
             <h2 className="text-xl font-medium mb-5">Total Cart</h2>
             <TotalCart />
             <h2 className="text-lg font-medium mt-5 mb-5">

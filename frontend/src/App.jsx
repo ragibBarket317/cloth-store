@@ -15,6 +15,9 @@ import Cart from './pages/Cart'
 import Login from './pages/Login'
 import Registration from './pages/Registration'
 import ProtectedRoute from './ProtectedRoute'
+import Fail from './components/Fail'
+import Cancel from './components/Cancel'
+import Success from './components/Success'
 
 const App = () => {
   return (
@@ -43,6 +46,9 @@ const App = () => {
           <Route path="/orders" element={<Orders />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
+          <Route path="/payment/success" element={<Success />} />
+          <Route path="/payment/fail" element={<Fail />} />
+          <Route path="/payment/cancel" element={<Cancel />} />
         </Routes>
       </div>
       <Footer />

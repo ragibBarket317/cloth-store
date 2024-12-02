@@ -16,9 +16,11 @@ const Navbar = () => {
   }
   const handleLogout = () => {
     setToken('')
+    setVisible(false)
     localStorage.removeItem('token')
     navigate('/login')
   }
+
   return (
     <div className="border-b border-gray-200 px-[3%] sm:px-[5%] py-5">
       <div className="flex justify-between items-center">
@@ -69,7 +71,7 @@ const Navbar = () => {
               {getCartCount()}
             </div>
           </div>
-          <div className="relative group">
+          <div className="hidden sm:block relative group">
             <LuUserCircle2
               onClick={() => navigate('/login')}
               className="w-5 h-5 cursor-pointer  "
@@ -98,7 +100,7 @@ const Navbar = () => {
             />
           </div>
           <div
-            className={`absolute top-0 bottom-0 right-0 overflow-hidden shadow-xl bg-white transition-all ${
+            className={`fixed top-0 bottom-0 right-0 shadow-xl z-50 bg-white transition-all ${
               visible ? 'w-3/4' : 'w-0'
             }`}
           >
@@ -137,6 +139,32 @@ const Navbar = () => {
                   >
                     Contact
                   </NavLink>
+                  <NavLink
+                    to="/login"
+                    onClick={() => setVisible(false)}
+                    className={`text-gray-700 text-base uppercase p-2 ${
+                      token ? 'hidden' : ''
+                    }`}
+                  >
+                    Login
+                  </NavLink>
+                  <NavLink
+                    to="/orders"
+                    onClick={() => setVisible(false)}
+                    className={`text-gray-700 text-base uppercase p-2 ml-2 ${
+                      token ? '' : 'hidden'
+                    }`}
+                  >
+                    Orders
+                  </NavLink>
+                  <p
+                    onClick={handleLogout}
+                    className={`text-gray-700 text-base uppercase p-2 ml-2 ${
+                      token ? '' : 'hidden'
+                    }`}
+                  >
+                    Logout
+                  </p>
                 </ul>
               </div>
             </div>
