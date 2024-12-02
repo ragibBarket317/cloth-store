@@ -17,7 +17,28 @@ connectCloudinary()
 //Middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors())
+
+// List of allowed origins
+const allowedOrigins = [
+  'https://cloth-store-smoky.vercel.app',
+  'https://cloth-store-admin-nine.vercel.app',
+]
+
+// Custom CORS configuration
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true)
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true) // Origin is allowed
+      } else {
+        callback(new Error('Not allowed by CORS')) // Origin is not allowed
+      }
+    },
+  })
+)
 
 // API End points
 app.use('/api/user', userRouter)
