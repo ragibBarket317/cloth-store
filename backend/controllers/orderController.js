@@ -1,4 +1,6 @@
-import sendOrderConfirmationEmail from '../config/nodemailer.js'
+import sendOrderConfirmationEmail, {
+  sendOrderDeliverdEmail,
+} from '../config/nodemailer.js'
 import orderModel from '../models/orderModel.js'
 import userModel from '../models/userModel.js'
 import SSLCommerzPayment from 'sslcommerz-lts'
@@ -183,6 +185,13 @@ const allOrders = async (req, res) => {
 const updateStatus = async (req, res) => {
   try {
     const { orderId, status } = req.body
+
+    const orders = await orderModel.findById(orderId)
+    const { address, date, amount } = await orders
+
+    if (status === 'Delivered') {
+      await sendOrderDeliverdEmail(orderId, date, address, amount)
+    }
     await orderModel.findByIdAndUpdate(orderId, { status })
     res.json({ success: true, message: 'Status updated' })
   } catch (error) {

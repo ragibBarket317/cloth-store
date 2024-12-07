@@ -8,6 +8,46 @@ const transporter = nodemailer.createTransport({
   },
 })
 
+export const sendOrderDeliverdEmail = async (
+  orderId,
+  orderDate,
+  address,
+  amount
+) => {
+  try {
+    const mailOptions = {
+      from: process.env.NODEMAILER_ADMIN_EMAIL,
+      to: address.email,
+      subject: 'Order Delivered Successfully',
+      html: `
+        <h3 style="text-align: center; font-size: 1.5rem;">Order Delivered</h3>
+        <p>Hey <strong>${address.firstName} ${address.lastName}</strong>,</p>
+        <p>Your order has been delivered successfully.</p>
+        <p><strong>Order Details:</strong></p>
+        <p><strong>Order ID:</strong> ${orderId}</p>
+        <p><strong>Order Date:</strong> ${new Date(
+          orderDate
+        ).toLocaleDateString()}</p>
+        <p><strong>Amount:</strong> ${amount} TK</p>
+        <div style="margin-top: 20px;">
+          <a href="${
+            process.env.FRONTEND_URL
+          }/orders" style="color: #1a73e8; text-decoration: none;">Give your feedback</a>
+        </div>
+        <div style="margin-top: 20px;">
+          <p style="margin-top: 20px;">Best regards,</p>
+          <p>Customer Support Team,</p>
+          <p>Cloth-Store</p>
+        </div>
+      `,
+    }
+
+    await transporter.sendMail(mailOptions)
+  } catch (error) {
+    console.error('Error sending email:', error)
+  }
+}
+
 // Function to send email
 const sendOrderConfirmationEmail = async (
   userEmail,
@@ -58,7 +98,6 @@ const sendOrderConfirmationEmail = async (
     }
 
     await transporter.sendMail(mailOptions)
-    console.log('Order confirmation email sent successfully!')
   } catch (error) {
     console.error('Error sending email:', error)
   }
