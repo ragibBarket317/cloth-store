@@ -5,10 +5,26 @@ import orderModel from '../models/orderModel.js'
 import userModel from '../models/userModel.js'
 import SSLCommerzPayment from 'sslcommerz-lts'
 import axios from 'axios'
+import updateStock from './updateStockController.js'
 
 const placeOrderByCod = async (req, res) => {
   try {
     const { userId, items, address, amount } = req.body
+
+    // Iterate over items to update stock for each product
+    for (const item of items) {
+      const { _id, size, quantity } = item
+
+      // Update stock for each item
+      const stockUpdateResponse = await updateStock(_id, size, quantity)
+
+      if (!stockUpdateResponse.success) {
+        return res.json({
+          success: false,
+          message: `Stock update failed for product ID: ${productId}, Size: ${size}`,
+        })
+      }
+    }
     const orderData = {
       userId,
       items,

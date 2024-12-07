@@ -10,6 +10,7 @@ const Collection = () => {
   const [category, setCategory] = useState([])
   const [subcategory, setSubCategory] = useState([])
   const [subSubcategory, setSubSubCategory] = useState([])
+  const [womenSubCategory, setWomenSubCategory] = useState([])
   const [sorted, setSorted] = useState('')
 
   const getCategory = (e) => {
@@ -86,11 +87,11 @@ const Collection = () => {
 
   useEffect(() => {
     applySorting()
-  }, [sorted])
+  }, [sorted, products])
 
   useEffect(() => {
     applyFilter()
-  }, [category, subcategory, subSubcategory, searchText])
+  }, [category, subcategory, subSubcategory, searchText, products])
   return (
     <div>
       <div className="mt-5 sm:hidden">
@@ -228,6 +229,74 @@ const Collection = () => {
               </div>
             </div>
           </div>
+          {/* <div className="mt-5 border p-8">
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <input
+                  onClick={(e) => getSubSubCategory(e)}
+                  type="checkbox"
+                  value={'Full Sleeve T Shirt'}
+                />
+                Full Sleeve T Shirt
+              </div>
+              <div className="flex gap-2">
+                <input
+                  onClick={(e) => getSubSubCategory(e)}
+                  type="checkbox"
+                  value={'Half Sleeve T Shirt'}
+                />
+                Half Sleeve T Shirt
+              </div>
+              <div className="flex gap-2">
+                <input
+                  onClick={(e) => getSubSubCategory(e)}
+                  type="checkbox"
+                  value={'Hoodie'}
+                />
+                Hoodie
+              </div>
+              <div className="flex gap-2">
+                <input
+                  onClick={(e) => getSubSubCategory(e)}
+                  type="checkbox"
+                  value={'Jaket'}
+                />
+                Jaket
+              </div>
+              <div className="flex gap-2">
+                <input
+                  onClick={(e) => getSubSubCategory(e)}
+                  type="checkbox"
+                  value={'Jeans'}
+                />
+                Jeans
+              </div>
+              <div className="flex gap-2">
+                <input
+                  onClick={(e) => getSubSubCategory(e)}
+                  type="checkbox"
+                  value={'Panjabi'}
+                />
+                Panjabi
+              </div>
+              <div className="flex gap-2">
+                <input
+                  onClick={(e) => getSubSubCategory(e)}
+                  type="checkbox"
+                  value={'Polo T Shirt'}
+                />
+                Polo T Shirt
+              </div>
+              <div className="flex gap-2">
+                <input
+                  onClick={(e) => getSubSubCategory(e)}
+                  type="checkbox"
+                  value={'Trouser'}
+                />
+                Trouser
+              </div>
+            </div>
+          </div> */}
         </div>
         <div className="flex-1">
           <div className="mt-10 flex justify-between">
