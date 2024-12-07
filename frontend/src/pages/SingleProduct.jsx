@@ -2,18 +2,21 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext'
 import ProductItem from '../components/ProductItem'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const SingleProduct = () => {
-  const { products, currency, navigate, addToCart } = useContext(ShopContext)
+  const { products, currency, navigate, addToCart, token, backendURL } =
+    useContext(ShopContext)
   const [productData, setProductData] = useState('')
   const [image, setImage] = useState('')
   const [selectSize, setSelectSize] = useState('')
+  const [reviews, setReviews] = useState([])
   const { id } = useParams()
 
   const relatedProducts = products.filter(
     (product) => product.subSubCategory === productData.subSubCategory
   )
-  console.log(relatedProducts)
 
   const getSingleProduct = () => {
     products.map((product) => {
@@ -24,7 +27,28 @@ const SingleProduct = () => {
       }
     })
   }
-  console.log(productData)
+  const fetchProductReviews = async () => {
+    try {
+      const response = await axios.post(
+        backendURL + `/api/review/get-approved`,
+        {
+          productId: id,
+        }
+      )
+      console.log('reviews', response)
+      if (response.data.success) {
+        setReviews(response.data.reviews)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  }
+
+  useEffect(() => {
+    fetchProductReviews()
+  }, [])
+
   useEffect(() => {
     getSingleProduct()
   }, [id, products])
@@ -82,7 +106,7 @@ const SingleProduct = () => {
             <hr />
             <div className="mt-3">
               <h2>Details Specification: </h2>
-              {productData?.spacification?.map((item, index) => (
+              {productData?.specification?.map((item, index) => (
                 <li key={index} className="ml-2 mt-3">
                   {item}
                 </li>
@@ -95,10 +119,12 @@ const SingleProduct = () => {
         <h2 className="mb-5 text-xl">Reviews</h2>
         <div className="flex ">
           <div className="w-full sm:w-[50%]">
-            {productData?.reviews?.map((review, index) => (
-              <div key={index} className="border-y py-4">
-                <h2 className="text-base font-semibold">{review.name}</h2>
-                <p>{review.description}</p>
+            {reviews?.map((review) => (
+              <div key={review._id} className="border-y py-4">
+                <h2 className="text-base font-semibold">
+                  {review.userId.name}
+                </h2>
+                <p>{review.comment}</p>
               </div>
             ))}
           </div>

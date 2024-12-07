@@ -2,10 +2,19 @@ import { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import ReviewModal from '../components/ReviewModal'
 
 const Orders = () => {
   const { products, token, backendURL, currency } = useContext(ShopContext)
   const [orderData, setOrderData] = useState([])
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [productId, setProductId] = useState('')
+
+  const openModal = (id) => {
+    setIsOpenModal(true)
+    setProductId(id)
+  }
+  const closeModal = () => setIsOpenModal(false)
 
   const loadOrderData = async () => {
     try {
@@ -88,7 +97,7 @@ const Orders = () => {
                 </button>
                 {item.status === 'Delivered' && (
                   <button
-                    onClick={loadOrderData}
+                    onClick={() => openModal(item._id)}
                     className="border px-4 py-2 text-sm font-medium rounded-sm ml-2"
                   >
                     Review
@@ -99,6 +108,9 @@ const Orders = () => {
           </div>
         ))}
       </div>
+      {isOpenModal && (
+        <ReviewModal closeModal={closeModal} productId={productId} />
+      )}
     </div>
   )
 }

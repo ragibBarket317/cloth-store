@@ -1,6 +1,8 @@
+import sendOrderConfirmationEmail from '../config/nodemailer.js'
 import orderModel from '../models/orderModel.js'
 import userModel from '../models/userModel.js'
 import SSLCommerzPayment from 'sslcommerz-lts'
+import axios from 'axios'
 
 const placeOrderByCod = async (req, res) => {
   try {
@@ -15,11 +17,17 @@ const placeOrderByCod = async (req, res) => {
       date: Date.now(),
     }
 
+    if (!address.email || !address || !items || !amount) {
+      return res.json({ success: false, message: 'Incomplete order details' })
+    }
+
     const newOrder = new orderModel(orderData)
     await newOrder.save()
 
+    await sendOrderConfirmationEmail(address.email, address, items, amount)
+
     await userModel.findByIdAndUpdate(userId, { cartData: {} })
-    res.json({ success: true, message: 'Order placed' })
+    res.json({ success: true, message: 'Order confirmed and email sent!' })
   } catch (error) {
     console.log(error)
     res.json({ success: false, message: error.message })
@@ -66,6 +74,10 @@ const placeOrderBySSLCommerz = async (req, res) => {
       date: Date.now(),
     }
 
+    if (!address.email || !address || !items || !amount) {
+      return res.json({ success: false, message: 'Incomplete order details' })
+    }
+
     const newOrder = new orderModel(orderData)
     await newOrder.save()
 
@@ -73,7 +85,6 @@ const placeOrderBySSLCommerz = async (req, res) => {
 
     const sslcz = new SSLCommerzPayment(storeId, storePassWord, false) // Use false for sandbox mode
     sslcz.init(data).then((response) => {
-      console.log(response)
       if (response?.GatewayPageURL) {
         res.json({ success: true, url: response.GatewayPageURL })
       } else {
@@ -91,20 +102,40 @@ const placeOrderBySSLCommerz = async (req, res) => {
 
 const successSSLCommerz = async (req, res) => {
   try {
-    const successData = req.body
-    if (successData.status !== 'VALID') {
-      throw new Error('Invalid Payment')
-    }
-    const updatedOrder = await orderModel.findOneAndUpdate(
-      { tran_id: successData.tran_id },
-      { payment: true },
-      { new: true }
-    )
+    const { tran_id, val_id } = req.body
 
-    if (!updatedOrder) {
-      throw new Error('Order not found for this transaction ID')
+    // Validate the payment with SSLCommerz
+    const storeId = `${process.env.STORE_ID}`
+    const storePassWord = `${process.env.STORE_PASSWORD}`
+    const validationURL = `https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=${val_id}&store_id=${storeId}&store_passwd=${storePassWord}&v=1&format=json`
+
+    const response = await axios.get(validationURL)
+    const { status, currency_amount } = response.data
+
+    if (status === 'VALID') {
+      // Update the order to mark payment as complete
+      const order = await orderModel.findOneAndUpdate(
+        { tran_id },
+        { payment: true },
+        { new: true }
+      )
+
+      if (order) {
+        // Send the order confirmation email
+        await sendOrderConfirmationEmail(
+          order.address.email,
+          order.address,
+          order.items,
+          order.amount
+        )
+
+        res.redirect(`${process.env.FRONTEND_URL}/payment/success`)
+      } else {
+        res.json({ success: false, message: 'Order not found.' })
+      }
+    } else {
+      res.json({ success: false, message: 'Payment validation failed.' })
     }
-    res.redirect(`${process.env.FRONTEND_URL}/payment/success`)
   } catch (error) {
     console.log(error)
     res.json({ success: false, message: error.message })

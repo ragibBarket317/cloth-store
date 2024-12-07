@@ -73,6 +73,7 @@ const Add = ({ token }) => {
         setSubCategory('')
         setSubSubCategory('')
         setSizes([])
+        handleSubmit()
       }
     } catch (error) {
       console.log(error)

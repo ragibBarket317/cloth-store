@@ -104,7 +104,7 @@ const Collection = () => {
       </div>
       <div className="flex flex-col sm:flex-row gap-[2%]">
         <div
-          className={`w-full sm:w-[18%] ${
+          className={`w-full sm:w-[18%]  ${
             visiableFilter ? '' : 'hidden sm:block'
           }`}
         >

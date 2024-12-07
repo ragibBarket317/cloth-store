@@ -8,7 +8,7 @@ const NewArrival = () => {
 
   useEffect(() => {
     setNewArrival(products.slice(0, 20))
-  }, [])
+  }, [products])
 
   return (
     <div className="mb-10">
