@@ -4,8 +4,9 @@
 The Cloth Store project is a full-stack web application designed to provide users with a seamless shopping experience. Users can browse, purchase products, track their orders, and leave reviews. The application also includes a comprehensive admin panel for managing products, users, orders, and reviews.
 
 ## Live Link
-[Cloth Store Client](https://cloth-store-smoky.vercel.app)
-[Cloth Store Admin Dashboard](https://cloth-store-admin-nine.vercel.app)
+- [Cloth Store Client](https://cloth-store-smoky.vercel.app)
+
+- [Cloth Store Admin Dashboard](https://cloth-store-admin-nine.vercel.app)
 
 ## Necessary Credentials
 - **Admin Login**:
