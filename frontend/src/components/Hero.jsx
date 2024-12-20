@@ -1,7 +1,7 @@
-import banner1 from '../assets/banner1.png'
-import banner2 from '../assets/banner2.png'
-import banner3 from '../assets/banner3.png'
-import banner4 from '../assets/banner4.jpg'
+import banner1 from '../assets/banner-01.png'
+import banner2 from '../assets/banner-02.png'
+import banner3 from '../assets/banner-03.png'
+import banner4 from '../assets/banner-04.jpg'
 import ImageSlider from './ImageSlider'
 const Hero = () => {
   const images = [banner4, banner3, banner2, banner1]
